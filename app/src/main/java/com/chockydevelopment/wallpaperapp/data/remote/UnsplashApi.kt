@@ -17,11 +17,13 @@ interface UnsplashApi {
     ): List<CategoriesItem>
 
     @Headers("Authorization: Client-ID ${BuildConfig.API_KEY}")
-    @GET("topics/{id_or_slug}/photos?")
+    @GET("topics/{id_or_slug}/photos")
     suspend fun getAllImages(
         @Path("id_or_slug")id:String,
-        @Query("page") page: Int = 1,
-        @Query("per_page") perPage: Int = 10
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int = 10,
+        @Query("orientation") orientation: String? = null,
+        @Query("order_by") orderBy: String? = "latest"
     ): List<CollectionItem>
 
     companion object {

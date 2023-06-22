@@ -16,10 +16,7 @@ class CollectionMapper {
 
     private fun toUrlsM(urls: Urls): UrlsM {
         return UrlsM(
-            full = urls.full,
-            regular = urls.regular,
-            small = urls.small,
-            small_s3 = urls.small_s3
+            small = urls.small
         )
     }
 

@@ -29,6 +29,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.chockydevelopment.wallpaperapp.R
 import com.chockydevelopment.wallpaperapp.domain.remote.models.categories.CategoriesItemM
 import com.chockydevelopment.wallpaperapp.presentation.bottom_navigation.Screen
 import com.chockydevelopment.wallpaperapp.presentation.view_models.CategoriesViewModel
@@ -146,5 +147,7 @@ private fun LoadPicture(
             .fillMaxWidth()
             .wrapContentHeight(),
         contentScale = ContentScale.FillBounds
-    )
+    ){
+        it.placeholder(R.drawable.picture)
+    }
 }

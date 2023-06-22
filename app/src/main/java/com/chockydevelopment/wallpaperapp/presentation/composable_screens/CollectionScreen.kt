@@ -4,10 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,6 +12,9 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -47,49 +47,34 @@ fun CollectionScreen(collectionId: String, navController: NavController) {
 @Composable
 fun CollectionList(viewModel: CollectionViewModel, id: String, navController: NavController) {
 
-    val collection =
-        viewModel.getAllImages(id).collectAsLazyPagingItems()
-    Log.d(TAG, "ID: $id")
-    Log.d(TAG, "RESULT: ${collection.itemCount}")
+    val dataFlow = remember { viewModel.getAllImages(id) }
+    val collection = dataFlow.collectAsLazyPagingItems()
 
     LazyVerticalStaggeredGrid(
-        columns = StaggeredGridCells.Adaptive(100.dp),
+        columns = StaggeredGridCells.Adaptive(200.dp),
         verticalItemSpacing = 2.dp,
         horizontalArrangement = Arrangement.spacedBy(2.dp),
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 53.dp, bottom = 60.dp),
         content = {
-//            this.items(
-//                count = collection.itemCount,
-//                key = collection.itemKey(),
-//                contentType = collection.itemContentType(
-//                )
-//            ) { index ->
-//                val item = collection[index]
-//                if (item != null) {
-//                    CollectionItem(item = item,
-//                        onClick = {
-//                            navController.navigate(Screen.Image.withArgs(item.id))
-//                        })
-//                }
-//            }
+            this.items(
+                count = collection.itemCount,
+                key = collection.itemKey(),
+                contentType = collection.itemContentType(
+                )
+            ) { index ->
+                val item = collection[index]
+                if (item != null) {
+                    CollectionItem(item = item,
+                        onClick = {
+                            navController.navigate(Screen.Image.withArgs(item.id))
+                        })
+                }
+            }
         }
     )
 }
-
-@Preview(showBackground = true)
-@Composable
-fun CollectionPreview() {
-    CollectionItemM(
-        id = "ID",
-        urlsM = UrlsM(
-            full = "",
-            small_s3 = "",
-            regular = "",
-            small = ""
-        )
-    )
-}
-
 
 @Composable
 fun CollectionItem(
@@ -111,7 +96,7 @@ fun CollectionItem(
             color = Color.White,
             fontSize = 24.sp
         )
-        LoadCollectionPicture(url = item.urlsM.full, name = item.id)
+        LoadCollectionPicture(url = item.urlsM.small, name = item.id)
     }
 }
 
@@ -131,10 +116,9 @@ private fun LoadCollectionPicture(
                 MaterialTheme.colors.secondaryVariant,
                 shape = RoundedCornerShape(3.dp)
             )
-            .fillMaxWidth()
-            .wrapContentHeight(),
+            .fillMaxWidth(),
         contentScale = ContentScale.FillBounds
     ) {
-        it.placeholder(R.drawable.ic_launcher_foreground)
+        it.placeholder(R.drawable.picture)
     }
 }
