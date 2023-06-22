@@ -1,6 +1,7 @@
 package com.chockydevelopment.wallpaperapp.presentation.composable_screens
 
-import android.util.Log
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -8,19 +9,21 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -30,11 +33,9 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.chockydevelopment.wallpaperapp.R
 import com.chockydevelopment.wallpaperapp.domain.remote.models.collection.CollectionItemM
-import com.chockydevelopment.wallpaperapp.domain.remote.models.collection.UrlsM
 import com.chockydevelopment.wallpaperapp.presentation.bottom_navigation.Screen
 import com.chockydevelopment.wallpaperapp.presentation.view_models.CollectionViewModel
 
-private const val TAG = "COLLECTION_"
 
 @Composable
 fun CollectionScreen(collectionId: String, navController: NavController) {
@@ -90,13 +91,43 @@ fun CollectionItem(
             },
         shape = RoundedCornerShape(3.dp)
     ) {
-        Text(
-            text = item.id,
-            modifier = Modifier.fillMaxSize(),
-            color = Color.White,
-            fontSize = 24.sp
-        )
-        LoadCollectionPicture(url = item.urlsM.small, name = item.id)
+        val context = LocalContext.current
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            LoadCollectionPicture(url = item.urlsM.small, name = item.id)
+            Row(
+                modifier = Modifier
+                    .height(40.dp)
+                    .fillMaxWidth()
+                    .padding(horizontal = 6.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = buildAnnotatedString {
+                        append("Photo by ")
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Black)) {
+                            append(item.userM.username)
+                        }
+                        append(" on Unsplash")
+                    },
+                    color = Color.White,
+                    fontSize = MaterialTheme.typography.caption.fontSize,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.clickable {
+                        val browserIntent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("${item.userM.links.html}?utm_source=chocky_devs_images&utm_medium=referral")
+                        )
+                        startActivity(context, browserIntent, null)
+                    }
+                )
+            }
+        }
     }
 }
 
@@ -116,7 +147,8 @@ private fun LoadCollectionPicture(
                 MaterialTheme.colors.secondaryVariant,
                 shape = RoundedCornerShape(3.dp)
             )
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .wrapContentHeight(),
         contentScale = ContentScale.FillBounds
     ) {
         it.placeholder(R.drawable.picture)

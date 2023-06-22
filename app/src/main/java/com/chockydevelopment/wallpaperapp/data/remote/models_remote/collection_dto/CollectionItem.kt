@@ -3,5 +3,6 @@ package com.chockydevelopment.wallpaperapp.data.remote.models_remote.collection_
 
 data class CollectionItem(
     val id: String,
-    val urls: Urls
+    val urls: Urls,
+    val user: User,
 )
