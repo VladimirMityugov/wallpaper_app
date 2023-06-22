@@ -1,5 +1,6 @@
 package com.chockydevelopment.wallpaperapp.data.remote
 
+import com.chockydevelopment.wallpaperapp.BuildConfig
 import com.chockydevelopment.wallpaperapp.data.remote.models_remote.categories_dto.CategoriesItem
 import com.chockydevelopment.wallpaperapp.data.remote.models_remote.collection_dto.CollectionItem
 import retrofit2.http.GET
@@ -9,22 +10,22 @@ import retrofit2.http.Query
 
 interface UnsplashApi {
 
-    @Headers("Authorization: Client-ID $KEY")
+    @Headers("Authorization: Client-ID ${BuildConfig.API_KEY}")
     @GET("topics/?")
     suspend fun getAllCategories(
         @Query("page") page: Int
     ): List<CategoriesItem>
 
-    @Headers("Authorization: Client-ID $KEY")
-    @GET("/topics/{id}/photos?")
+    @Headers("Authorization: Client-ID ${BuildConfig.API_KEY}")
+    @GET("topics/{id_or_slug}/photos?")
     suspend fun getAllImages(
-        @Path("id")id:String,
-        @Query("page") page: Int
+        @Path("id_or_slug")id:String,
+        @Query("page") page: Int = 1,
+        @Query("per_page") perPage: Int = 10
     ): List<CollectionItem>
 
     companion object {
         const val BASE_URL = "https://api.unsplash.com/"
-        private const val KEY = "Rwu_P3p6fvAkAcuQn9da6Ctm79WZjWs2xDJsGtL0bPg"
     }
 
 

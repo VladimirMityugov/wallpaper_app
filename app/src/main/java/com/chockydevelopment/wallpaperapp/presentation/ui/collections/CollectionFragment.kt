@@ -115,7 +115,7 @@ class CollectionFragment : Fragment() {
                 },
             shape = RoundedCornerShape(3.dp)
         ) {
-            LoadCollectionPicture(url = item.collectionUrlsM.full, name = item.id)
+            LoadCollectionPicture(url = item.urlsM.full, name = item.id)
         }
     }
 

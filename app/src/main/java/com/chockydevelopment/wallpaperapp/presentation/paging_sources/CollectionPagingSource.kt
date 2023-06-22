@@ -5,8 +5,9 @@ import androidx.paging.PagingState
 import com.chockydevelopment.wallpaperapp.domain.remote.models.collection.CollectionItemM
 import com.chockydevelopment.wallpaperapp.domain.remote.use_cases.UseCaseRemote
 
-class CollectionPagingSource (
-    private val id:String,
+
+class CollectionPagingSource(
+    private val id: String,
     private val useCaseRemote: UseCaseRemote
 ) : PagingSource<Int, CollectionItemM>() {
 
@@ -15,12 +16,12 @@ class CollectionPagingSource (
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CollectionItemM> {
         val page = params.key ?: FIRST_PAGE
         return kotlin.runCatching {
-            useCaseRemote.getAllImages(id,page)
+            useCaseRemote.getAllImages(id, page)
         }.fold(
             onSuccess = {
                 LoadResult.Page(
                     data = it,
-                    prevKey = null,
+                    prevKey = if (page == 1) null else page - 1,
                     nextKey = if (it.isEmpty()) null else page + 1
                 )
             },
