@@ -14,6 +14,6 @@ interface FavoritesDao {
     suspend fun addToFavorites(vararg favorites: Favorites)
 
     @Query("DELETE FROM Favorites WHERE favoritesId =:favoritesId")
-    suspend fun deleteFromFavoritesById(favoritesId: Int)
+    suspend fun deleteFromFavoritesById(favoritesId: String)
 
 }

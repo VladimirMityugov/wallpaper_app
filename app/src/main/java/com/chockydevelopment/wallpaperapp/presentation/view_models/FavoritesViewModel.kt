@@ -23,7 +23,7 @@ class FavoritesViewModel @Inject constructor(
         }
     }
 
-    fun deleteFromFavoritesById(favoritesId: Int){
+    fun deleteFromFavoritesById(favoritesId: String){
         viewModelScope.launch {
             useCaseLocal.deleteFromFavoritesById(favoritesId)
         }

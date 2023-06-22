@@ -17,7 +17,7 @@ class UseCaseLocal @Inject constructor(
         repositoryLocal.addToFavorites(favoritesM)
     }
 
-    suspend fun deleteFromFavoritesById(favoritesId: Int){
+    suspend fun deleteFromFavoritesById(favoritesId: String){
         repositoryLocal.deleteFromFavoritesById(favoritesId = favoritesId)
     }
 

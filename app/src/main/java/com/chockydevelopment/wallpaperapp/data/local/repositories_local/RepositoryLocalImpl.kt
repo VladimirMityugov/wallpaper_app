@@ -27,7 +27,7 @@ class RepositoryLocalImpl @Inject constructor(
         favoritesDao.addToFavorites(mapper.fromFavoritesM(favoritesM))
     }
 
-    override suspend fun deleteFromFavoritesById(favoritesId: Int) {
+    override suspend fun deleteFromFavoritesById(favoritesId: String) {
         favoritesDao.deleteFromFavoritesById(favoritesId = favoritesId)
     }
 

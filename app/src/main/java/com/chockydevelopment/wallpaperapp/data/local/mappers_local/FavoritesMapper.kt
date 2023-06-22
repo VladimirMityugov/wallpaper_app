@@ -8,14 +8,14 @@ class FavoritesMapper {
     fun fromFavoritesM(favoritesM: FavoritesM): Favorites{
         return Favorites(
             favoritesId = favoritesM.favoritesId,
-            favoritesName = favoritesM.favoritesName
+            favoritesUrl = favoritesM.favoritesUrl
         )
     }
 
     fun toFavoritesM(favorites: Favorites):FavoritesM{
         return FavoritesM(
             favoritesId = favorites.favoritesId,
-            favoritesName = favorites.favoritesName
+            favoritesUrl = favorites.favoritesUrl
         )
     }
 }

@@ -2,7 +2,6 @@ package com.chockydevelopment.wallpaperapp.presentation.composable_screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
@@ -13,25 +12,20 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
-import com.chockydevelopment.wallpaperapp.R
 import com.chockydevelopment.wallpaperapp.domain.remote.models.categories.CategoriesItemM
 import com.chockydevelopment.wallpaperapp.presentation.bottom_navigation.Screen
+import com.chockydevelopment.wallpaperapp.presentation.util.LoadImage
 import com.chockydevelopment.wallpaperapp.presentation.view_models.CategoriesViewModel
 
 @Composable
@@ -90,7 +84,7 @@ fun CategoryItem(
     ) {
 
         Box(modifier = Modifier.fillMaxSize()) {
-            LoadPicture(url = category.cover_photo.urlsM.small, name = category.title)
+            LoadImage(url = category.cover_photo.urlsM.small, name = category.title)
 
             Column(
                 verticalArrangement = Arrangement.Bottom,
@@ -128,26 +122,3 @@ fun CategoryItem(
     }
 }
 
-
-@OptIn(ExperimentalGlideComposeApi::class)
-@Composable
-private fun LoadPicture(
-    url: String,
-    name: String
-) {
-    GlideImage(
-        model = url,
-        contentDescription = name,
-        modifier = Modifier
-            .border(
-                1.dp,
-                MaterialTheme.colors.secondaryVariant,
-                shape = RoundedCornerShape(3.dp)
-            )
-            .fillMaxWidth()
-            .wrapContentHeight(),
-        contentScale = ContentScale.FillBounds
-    ){
-        it.placeholder(R.drawable.picture)
-    }
-}

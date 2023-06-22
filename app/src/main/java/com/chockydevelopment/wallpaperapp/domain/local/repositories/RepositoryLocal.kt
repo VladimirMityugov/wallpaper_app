@@ -10,6 +10,6 @@ interface RepositoryLocal {
 
     suspend fun addToFavorites(favoritesM: FavoritesM)
 
-    suspend fun deleteFromFavoritesById(favoritesId: Int)
+    suspend fun deleteFromFavoritesById(favoritesId: String)
 
 }

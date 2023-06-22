@@ -21,7 +21,8 @@ class CollectionMapper {
 
     private fun toUrlsM(urls: Urls): UrlsM {
         return UrlsM(
-            small = urls.small
+            small = urls.small,
+            full = urls.full
         )
     }
 

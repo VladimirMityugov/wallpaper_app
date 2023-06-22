@@ -9,6 +9,7 @@ import androidx.paging.cachedIn
 import com.chockydevelopment.wallpaperapp.domain.remote.models.collection.CollectionItemM
 import com.chockydevelopment.wallpaperapp.domain.remote.use_cases.UseCaseRemote
 import com.chockydevelopment.wallpaperapp.presentation.paging_sources.CollectionPagingSource
+import com.chockydevelopment.wallpaperapp.presentation.util.ImageSetter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CollectionViewModel @Inject constructor(
-    private val useCaseRemote: UseCaseRemote
+    private val useCaseRemote: UseCaseRemote,
+    private val imageSetter: ImageSetter
 ) : ViewModel() {
 
     fun getAllImages(id:String): Flow<PagingData<CollectionItemM>> = Pager(
@@ -29,5 +31,10 @@ class CollectionViewModel @Inject constructor(
             }
         ).flow
             .cachedIn(viewModelScope)
+
+    fun setImage(item: CollectionItemM){
+        imageSetter.setImage(item)
+    }
+
 
 }
