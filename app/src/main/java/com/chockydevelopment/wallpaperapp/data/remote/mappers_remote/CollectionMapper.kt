@@ -15,7 +15,8 @@ class CollectionMapper {
         return CollectionItemM(
             id = collectionItem.id,
             urlsM = toUrlsM(collectionItem.urls),
-            userM = toUserM(collectionItem.user)
+            userM = toUserM(collectionItem.user),
+            linksM = toLinksM(collectionItem.links)
         )
     }
 
@@ -35,7 +36,8 @@ class CollectionMapper {
 
     private fun toLinksM(links: Links): LinksM {
         return LinksM(
-            html = links.html
+            html = links.html,
+            download_location = links.download_location
         )
     }
 

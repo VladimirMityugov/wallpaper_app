@@ -2,7 +2,7 @@ package com.chockydevelopment.wallpaperapp.presentation.composable_screens
 
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
@@ -15,7 +15,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -27,13 +26,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
 import com.chockydevelopment.wallpaperapp.R
 import com.chockydevelopment.wallpaperapp.domain.local.models.FavoritesM
 import com.chockydevelopment.wallpaperapp.domain.remote.models.collection.CollectionItemM
@@ -42,7 +39,7 @@ import com.chockydevelopment.wallpaperapp.presentation.util.LoadImage
 import com.chockydevelopment.wallpaperapp.presentation.view_models.CollectionViewModel
 import com.chockydevelopment.wallpaperapp.presentation.view_models.FavoritesViewModel
 
-
+private const val TAG = "COLLECTION_"
 @Composable
 fun CollectionScreen(collectionId: String, navController: NavController) {
 
@@ -69,28 +66,34 @@ fun CollectionList(
     val dataFlow = remember { viewModel.getAllImages(id) }
     val collection = dataFlow.collectAsLazyPagingItems()
 
-    LazyVerticalStaggeredGrid(
-        columns = StaggeredGridCells.Adaptive(200.dp),
-        verticalItemSpacing = 2.dp,
-        horizontalArrangement = Arrangement.spacedBy(2.dp),
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 53.dp, bottom = 60.dp)
-    ) {
-        this.items(
-            count = collection.itemCount,
-            key = collection.itemKey(),
-            contentType = collection.itemContentType(
-            )
-        ) { index ->
-            val item = collection[index]
-            if (item != null) {
-                CollectionItem(item = item,
-                    viewModel = favoritesViewModel,
-                    onClick = {
-                        viewModel.setImage(item)
-                        navController.navigate(Screen.Image.screen_route)
-                    })
+
+    if (collection.itemCount == 0 && collection.loadState.refresh != LoadState.Loading) {
+        // Show a loading indicator or an empty state
+        Text(text = "No items found")
+    } else {
+        LazyVerticalStaggeredGrid(
+            columns = StaggeredGridCells.Fixed(2),
+            verticalItemSpacing = 2.dp,
+            horizontalArrangement = Arrangement.spacedBy(2.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 53.dp, bottom = 60.dp)
+        ) {
+            this.items(
+                count = collection.itemCount,
+                key = collection.itemKey(),
+                contentType = collection.itemContentType(
+                )
+            ) { index ->
+                val item = collection[index]
+                if (item != null) {
+                    CollectionItem(item = item,
+                        viewModel = favoritesViewModel,
+                        onClick = {
+                            viewModel.setImage(item)
+                            navController.navigate(Screen.Image.screen_route)
+                        })
+                }
             }
         }
     }

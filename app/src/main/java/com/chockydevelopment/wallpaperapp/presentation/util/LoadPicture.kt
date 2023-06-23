@@ -1,6 +1,7 @@
 package com.chockydevelopment.wallpaperapp.presentation.util
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,7 +31,7 @@ fun LoadImage(
             )
             .fillMaxWidth()
             .wrapContentHeight(),
-        contentScale = ContentScale.FillHeight
+        contentScale = ContentScale.Crop
     ) {
         it.placeholder(R.drawable.picture).centerCrop()
     }

@@ -5,4 +5,5 @@ data class CollectionItem(
     val id: String,
     val urls: Urls,
     val user: User,
+    val links: Links
 )

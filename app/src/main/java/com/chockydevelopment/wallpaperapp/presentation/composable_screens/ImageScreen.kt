@@ -1,35 +1,51 @@
 package com.chockydevelopment.wallpaperapp.presentation.composable_screens
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.chockydevelopment.wallpaperapp.R
+import com.chockydevelopment.wallpaperapp.domain.local.models.FavoritesM
 import com.chockydevelopment.wallpaperapp.domain.remote.models.collection.CollectionItemM
 import com.chockydevelopment.wallpaperapp.presentation.util.LoadImage
+import com.chockydevelopment.wallpaperapp.presentation.view_models.FavoritesViewModel
 
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun ImageScreen(imageItem: CollectionItemM) {
-    ImageItem(item = imageItem)
+
+    val favoritesViewModel = hiltViewModel<FavoritesViewModel>()
+    ImageItem(item = imageItem, viewModel = favoritesViewModel)
 }
 
 @Composable
 fun ImageItem(
-    item: CollectionItemM
+    item: CollectionItemM,
+    viewModel: FavoritesViewModel
 ) {
 
     Box(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(top = 53.dp, bottom = 60.dp),
         contentAlignment = Alignment.Center
     ) {
         LoadImage(url = item.urlsM.full, name = item.id)
+        val context = LocalContext.current
+
 
         Column(
             verticalArrangement = Arrangement.Bottom,
@@ -39,31 +55,49 @@ fun ImageItem(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(23.dp)
-                    .padding(bottom = 5.dp)
+                    .height(35.dp)
                     .background(MaterialTheme.colors.onPrimary.copy(0.45f)),
                 horizontalArrangement = Arrangement.SpaceBetween,
 
                 ) {
+                val favoritesList = viewModel.favorites.collectAsState(initial = emptyList())
+                val favoriteItem: FavoritesM? = favoritesList.value.find { favoriteImage ->
+                    favoriteImage.favoritesId == item.id
+                }
+                val inFavorites: Boolean = favoriteItem != null
 
+                Image(painter = painterResource(
+                    id = R.drawable.download
+                ),
+                    contentDescription = "download",
+                    modifier = Modifier
+                        .padding(start = 10.dp, top = 5.dp)
+                        .size(22.dp)
+                        .clickable {
+                            val downloadIntent = Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse(item.userM.links.html)
+                            )
+                            startActivity(context, downloadIntent, null)
+                        })
 
-//                Image(painter = painterResource(
-//                    id = if (inFavorites) {
-//                        R.drawable.heart_filled
-//                    } else R.drawable.heart
-//                ),
-//                    contentDescription = "to_favorites",
-//                    modifier = Modifier
-//                        .padding(end = 10.dp)
-//                        .size(15.dp)
-//                        .clickable {
-//                            if (inFavorites) viewModel.deleteFromFavoritesById(item.id) else viewModel.addToFavorites(
-//                                favoritesM = FavoritesM(
-//                                    favoritesId = item.id,
-//                                    favoritesUrl = item.urlsM.small
-//                                )
-//                            )
-//                        })
+                Image(painter = painterResource(
+                    id = if (inFavorites) {
+                        R.drawable.heart_filled
+                    } else R.drawable.heart
+                ),
+                    contentDescription = "to_favorites",
+                    modifier = Modifier
+                        .padding(end = 10.dp, top = 5.dp)
+                        .size(22.dp)
+                        .clickable {
+                            if (inFavorites) viewModel.deleteFromFavoritesById(item.id) else viewModel.addToFavorites(
+                                favoritesM = FavoritesM(
+                                    favoritesId = item.id,
+                                    favoritesUrl = item.urlsM.small
+                                )
+                            )
+                        })
             }
         }
     }

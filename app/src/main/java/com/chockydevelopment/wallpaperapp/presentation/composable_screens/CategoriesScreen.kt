@@ -44,7 +44,7 @@ fun CategoriesList(viewModel: CategoriesViewModel, navController: NavController)
         viewModel.allCategories.collectAsLazyPagingItems()
 
     LazyVerticalStaggeredGrid(
-        columns = StaggeredGridCells.Adaptive(200.dp),
+        columns = StaggeredGridCells.Fixed(2),
         verticalItemSpacing = 2.dp,
         horizontalArrangement = Arrangement.spacedBy(2.dp),
         modifier = Modifier.fillMaxSize().padding(top = 53.dp, bottom = 60.dp),
