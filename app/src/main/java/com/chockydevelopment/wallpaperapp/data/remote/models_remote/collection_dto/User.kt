@@ -1,6 +1,10 @@
 package com.chockydevelopment.wallpaperapp.data.remote.models_remote.collection_dto
 
+import androidx.room.Embedded
+
+@kotlinx.serialization.Serializable
 data class User(
     val username: String,
-    val links:Links
+    @Embedded
+    val links:UserLinks
 )

@@ -1,15 +1,15 @@
 package com.chockydevelopment.wallpaperapp.domain.local.repositories
 
 
-import com.chockydevelopment.wallpaperapp.domain.local.models.FavoritesM
+import com.chockydevelopment.wallpaperapp.domain.remote.models.collection.CollectionItemM
 import kotlinx.coroutines.flow.Flow
 
 interface RepositoryLocal {
 
-    fun getAllFavorites(): Flow<List<FavoritesM>>
+    fun getAllFavorites(): Flow<List<CollectionItemM>>
 
-    suspend fun addToFavorites(favoritesM: FavoritesM)
+    suspend fun addToFavorites(collectionItemM: CollectionItemM)
 
-    suspend fun deleteFromFavoritesById(favoritesId: String)
+    suspend fun deleteFromFavoritesById(imageId: String)
 
 }

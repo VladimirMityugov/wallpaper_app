@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -47,7 +48,9 @@ fun CategoriesList(viewModel: CategoriesViewModel, navController: NavController)
         columns = StaggeredGridCells.Fixed(2),
         verticalItemSpacing = 2.dp,
         horizontalArrangement = Arrangement.spacedBy(2.dp),
-        modifier = Modifier.fillMaxSize().padding(top = 53.dp, bottom = 60.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 53.dp, bottom = 60.dp),
         content = {
             this.items(
                 count = categories.itemCount,
@@ -102,6 +105,8 @@ fun CategoryItem(
                         modifier = Modifier.padding(top = 5.dp, start = 5.dp),
                         color = MaterialTheme.colors.onSurface,
                         fontSize = 12.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                         fontFamily = FontFamily.SansSerif,
                         fontWeight = FontWeight.ExtraBold,
                         textAlign = TextAlign.Start
@@ -112,6 +117,8 @@ fun CategoryItem(
                         modifier = Modifier.padding(top = 5.dp, end = 5.dp),
                         color = MaterialTheme.colors.onSurface,
                         fontSize = 10.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                         fontFamily = FontFamily.SansSerif,
                         fontWeight = FontWeight.ExtraBold,
                         textAlign = TextAlign.End

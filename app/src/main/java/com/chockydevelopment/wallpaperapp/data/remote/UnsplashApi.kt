@@ -22,7 +22,7 @@ interface UnsplashApi {
         @Path("id_or_slug")id:String,
         @Query("page") page: Int,
         @Query("per_page") perPage: Int = 10,
-        @Query("orientation") orientation: String? = null,
+        @Query("orientation") orientation: String = "portrait",
         @Query("order_by") orderBy: String? = "latest"
     ): List<CollectionItem>
 

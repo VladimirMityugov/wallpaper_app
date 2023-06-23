@@ -61,8 +61,8 @@ fun ImageItem(
 
                 ) {
                 val favoritesList = viewModel.favorites.collectAsState(initial = emptyList())
-                val favoriteItem: FavoritesM? = favoritesList.value.find { favoriteImage ->
-                    favoriteImage.favoritesId == item.id
+                val favoriteItem: CollectionItemM? = favoritesList.value.find { favoriteImage ->
+                    favoriteImage.id == item.id
                 }
                 val inFavorites: Boolean = favoriteItem != null
 
@@ -76,7 +76,7 @@ fun ImageItem(
                         .clickable {
                             val downloadIntent = Intent(
                                 Intent.ACTION_VIEW,
-                                Uri.parse(item.userM.links.html)
+                                Uri.parse(item.linksM.download_location)
                             )
                             startActivity(context, downloadIntent, null)
                         })
@@ -91,12 +91,8 @@ fun ImageItem(
                         .padding(end = 10.dp, top = 5.dp)
                         .size(22.dp)
                         .clickable {
-                            if (inFavorites) viewModel.deleteFromFavoritesById(item.id) else viewModel.addToFavorites(
-                                favoritesM = FavoritesM(
-                                    favoritesId = item.id,
-                                    favoritesUrl = item.urlsM.small
-                                )
-                            )
+                            if (inFavorites) viewModel.deleteFromFavoritesById(item.id)
+                            else viewModel.addToFavorites(item)
                         })
             }
         }

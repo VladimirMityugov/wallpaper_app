@@ -4,9 +4,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
-@Entity (tableName = "Favorites")
+//@Entity (tableName = "Favorites")
 data class Favorites(
-    @PrimaryKey
+//    @PrimaryKey
     val favoritesId: String,
     val favoritesUrl: String
 )

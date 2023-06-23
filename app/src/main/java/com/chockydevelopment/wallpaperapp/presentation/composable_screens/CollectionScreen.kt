@@ -40,6 +40,7 @@ import com.chockydevelopment.wallpaperapp.presentation.view_models.CollectionVie
 import com.chockydevelopment.wallpaperapp.presentation.view_models.FavoritesViewModel
 
 private const val TAG = "COLLECTION_"
+
 @Composable
 fun CollectionScreen(collectionId: String, navController: NavController) {
 
@@ -116,8 +117,8 @@ fun CollectionItem(
     ) {
         val context = LocalContext.current
         val favoritesList = viewModel.favorites.collectAsState(initial = emptyList())
-        val favoriteItem: FavoritesM? = favoritesList.value.find { favoriteImage ->
-            favoriteImage.favoritesId == item.id
+        val favoriteItem: CollectionItemM? = favoritesList.value.find { favoriteImage ->
+            favoriteImage.id == item.id
         }
         val inFavorites: Boolean = favoriteItem != null
 
@@ -176,12 +177,8 @@ fun CollectionItem(
                             .padding(end = 10.dp)
                             .size(15.dp)
                             .clickable {
-                                if (inFavorites) viewModel.deleteFromFavoritesById(item.id) else viewModel.addToFavorites(
-                                    favoritesM = FavoritesM(
-                                        favoritesId = item.id,
-                                        favoritesUrl = item.urlsM.small
-                                    )
-                                )
+                                if (inFavorites) viewModel.deleteFromFavoritesById(item.id)
+                                else viewModel.addToFavorites(item)
                             })
                 }
             }

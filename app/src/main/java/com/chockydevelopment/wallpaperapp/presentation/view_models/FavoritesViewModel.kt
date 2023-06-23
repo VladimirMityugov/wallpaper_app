@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chockydevelopment.wallpaperapp.domain.local.models.FavoritesM
 import com.chockydevelopment.wallpaperapp.domain.local.use_cases.UseCaseLocal
+import com.chockydevelopment.wallpaperapp.domain.remote.models.collection.CollectionItemM
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -15,17 +16,17 @@ class FavoritesViewModel @Inject constructor(
     private val useCaseLocal: UseCaseLocal
 ) : ViewModel() {
 
-    val favorites: Flow<List<FavoritesM>> = useCaseLocal.getAllFavorites()
+    val favorites: Flow<List<CollectionItemM>> = useCaseLocal.getAllFavorites()
 
-    fun addToFavorites(favoritesM: FavoritesM){
+    fun addToFavorites(collectionItemM: CollectionItemM){
         viewModelScope.launch {
-            useCaseLocal.addToFavorites(favoritesM)
+            useCaseLocal.addToFavorites(collectionItemM)
         }
     }
 
-    fun deleteFromFavoritesById(favoritesId: String){
+    fun deleteFromFavoritesById(imageId: String){
         viewModelScope.launch {
-            useCaseLocal.deleteFromFavoritesById(favoritesId)
+            useCaseLocal.deleteFromFavoritesById(imageId)
         }
     }
 
