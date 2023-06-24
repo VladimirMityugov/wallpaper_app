@@ -2,7 +2,8 @@ package com.chockydevelopment.wallpaperapp.presentation.composable_screens
 
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
+import androidx.activity.OnBackPressedDispatcher
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
@@ -32,14 +33,13 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.chockydevelopment.wallpaperapp.R
-import com.chockydevelopment.wallpaperapp.domain.local.models.FavoritesM
 import com.chockydevelopment.wallpaperapp.domain.remote.models.collection.CollectionItemM
 import com.chockydevelopment.wallpaperapp.presentation.bottom_navigation.Screen
 import com.chockydevelopment.wallpaperapp.presentation.util.LoadImage
+import com.chockydevelopment.wallpaperapp.presentation.util.TopBar
 import com.chockydevelopment.wallpaperapp.presentation.view_models.CollectionViewModel
 import com.chockydevelopment.wallpaperapp.presentation.view_models.FavoritesViewModel
 
-private const val TAG = "COLLECTION_"
 
 @Composable
 fun CollectionScreen(collectionId: String, navController: NavController) {
@@ -47,13 +47,22 @@ fun CollectionScreen(collectionId: String, navController: NavController) {
     val viewModel = hiltViewModel<CollectionViewModel>()
     val favoritesViewModel = hiltViewModel<FavoritesViewModel>()
 
-    CollectionList(
-        viewModel = viewModel,
-        favoritesViewModel = favoritesViewModel,
-        id = collectionId,
-        navController = navController
-    )
+    Column(
+        modifier = Modifier
+            .padding(top = 53.dp, bottom = 60.dp)
+    ) {
+        TopBar(
+            onBackClicked = {navController.popBackStack()}
+        )
+        CollectionList(
+            viewModel = viewModel,
+            favoritesViewModel = favoritesViewModel,
+            id = collectionId,
+            navController = navController
+        )
+    }
 }
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -78,7 +87,6 @@ fun CollectionList(
             horizontalArrangement = Arrangement.spacedBy(2.dp),
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 53.dp, bottom = 60.dp)
         ) {
             this.items(
                 count = collection.itemCount,

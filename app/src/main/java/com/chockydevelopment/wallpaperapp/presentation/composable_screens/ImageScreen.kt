@@ -1,7 +1,13 @@
 package com.chockydevelopment.wallpaperapp.presentation.composable_screens
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.WallpaperManager
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,21 +20,38 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.chockydevelopment.wallpaperapp.R
-import com.chockydevelopment.wallpaperapp.domain.local.models.FavoritesM
 import com.chockydevelopment.wallpaperapp.domain.remote.models.collection.CollectionItemM
 import com.chockydevelopment.wallpaperapp.presentation.util.LoadImage
+import com.chockydevelopment.wallpaperapp.presentation.util.TopBar
 import com.chockydevelopment.wallpaperapp.presentation.view_models.FavoritesViewModel
 
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun ImageScreen(imageItem: CollectionItemM) {
+fun ImageScreen(imageItem: CollectionItemM, navController: NavHostController) {
 
     val favoritesViewModel = hiltViewModel<FavoritesViewModel>()
-    ImageItem(item = imageItem, viewModel = favoritesViewModel)
+
+    Column(
+        modifier = Modifier
+            .padding(top = 53.dp, bottom = 60.dp)
+    ) {
+        TopBar(
+            onBackClicked = { navController.popBackStack() }
+        )
+        ImageItem(item = imageItem, viewModel = favoritesViewModel)
+    }
+
+
 }
 
 @Composable
@@ -39,8 +62,7 @@ fun ImageItem(
 
     Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 53.dp, bottom = 60.dp),
+            .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         LoadImage(url = item.urlsM.small, name = item.id)
@@ -72,7 +94,7 @@ fun ImageItem(
                     contentDescription = "download",
                     modifier = Modifier
                         .padding(start = 10.dp, top = 5.dp, bottom = 5.dp)
-                        .size(22.dp)
+                        .size(25.dp)
                         .clickable {
                             val downloadIntent = Intent(
                                 Intent.ACTION_VIEW,
@@ -80,6 +102,52 @@ fun ImageItem(
                             )
                             startActivity(context, downloadIntent, null)
                         })
+
+
+                Image(painter = painterResource(
+                    id = R.drawable.wallpaper
+                ),
+                    contentDescription = "set wallpaper",
+                    modifier = Modifier
+                        .padding(top = 5.dp, bottom = 5.dp)
+                        .size(25.dp)
+                        .clickable {
+                            if (ContextCompat.checkSelfPermission(
+                                    context,
+                                    Manifest.permission.SET_WALLPAPER
+                                )
+                                == PackageManager.PERMISSION_GRANTED
+                            ) {
+                                val context = context as Activity
+                                Glide
+                                    .with(context)
+                                    .asBitmap()
+                                    .load(item.urlsM.regular)
+                                    .into(object : CustomTarget<Bitmap>() {
+                                        override fun onResourceReady(
+                                            resource: Bitmap,
+                                            transition: Transition<in Bitmap>?
+                                        ) {
+                                            val wallpaperManager =
+                                                WallpaperManager.getInstance(context)
+                                            wallpaperManager.setBitmap(resource)
+                                        }
+
+                                        override fun onLoadCleared(placeholder: Drawable?) {
+                                            // Not used
+                                        }
+                                    })
+                            } else {
+                                ActivityCompat.requestPermissions(
+                                    context as Activity,
+                                    arrayOf(Manifest.permission.SET_WALLPAPER),
+                                    123
+                                )
+                            }
+
+
+                        })
+
 
                 Image(painter = painterResource(
                     id = if (inFavorites) {

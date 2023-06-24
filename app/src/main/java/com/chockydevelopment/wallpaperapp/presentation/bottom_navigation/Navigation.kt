@@ -36,7 +36,7 @@ fun Navigation(navController: NavHostController) {
         composable(route = Screen.Image.screen_route) {
             val viewModel = hiltViewModel<ImageViewModel>()
             val image by viewModel.image.collectAsStateWithLifecycle()
-            image?.let { it1 -> ImageScreen(imageItem = it1) }
+            image?.let { it1 -> ImageScreen(imageItem = it1, navController = navController) }
 
         }
 
