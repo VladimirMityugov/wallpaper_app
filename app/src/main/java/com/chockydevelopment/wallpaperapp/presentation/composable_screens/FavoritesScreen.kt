@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.chockydevelopment.wallpaperapp.R
-import com.chockydevelopment.wallpaperapp.domain.local.models.FavoritesM
 import com.chockydevelopment.wallpaperapp.domain.remote.models.collection.CollectionItemM
 import com.chockydevelopment.wallpaperapp.presentation.bottom_navigation.Screen
 import com.chockydevelopment.wallpaperapp.presentation.util.LoadImage
@@ -63,15 +62,18 @@ fun FavoritesList(
 
 
     if (collection.value.isEmpty()) {
-        Text(
-            text = "No items found",
-            color = Color.White,
-            fontSize = 24.sp,
-            fontFamily = FontFamily.SansSerif,
-            fontStyle = FontStyle.Normal,
-            modifier = Modifier.fillMaxSize(),
-            textAlign = TextAlign.Center
-        )
+        Column(modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center) {
+            Text(
+                text = "You don`t have favorite images yet",
+                color = Color.White,
+                fontSize = 20.sp,
+                fontFamily = FontFamily.SansSerif,
+                fontStyle = FontStyle.Normal,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        }
     } else {
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Fixed(2),

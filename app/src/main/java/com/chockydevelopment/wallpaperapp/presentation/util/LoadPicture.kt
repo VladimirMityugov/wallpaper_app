@@ -32,8 +32,8 @@ fun LoadImage(
             )
             .fillMaxHeight()
             .wrapContentHeight(),
-        contentScale = ContentScale.Inside
+        contentScale = ContentScale.FillHeight
     ) {
-        it.placeholder(R.drawable.picture).centerCrop()
+        it.placeholder(R.drawable.picture)
     }
 }

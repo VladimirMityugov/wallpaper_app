@@ -104,7 +104,7 @@ fun CategoryItem(
                         text = category.title,
                         modifier = Modifier.padding(top = 5.dp, start = 5.dp),
                         color = MaterialTheme.colors.onSurface,
-                        fontSize = 12.sp,
+                        fontSize = 10.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         fontFamily = FontFamily.SansSerif,

@@ -4,7 +4,5 @@ import androidx.room.Embedded
 
 @kotlinx.serialization.Serializable
 data class User(
-    val username: String,
-    @Embedded
-    val links:UserLinks
+    val username: String
 )

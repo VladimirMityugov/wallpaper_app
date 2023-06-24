@@ -1,7 +1,6 @@
 package com.chockydevelopment.wallpaperapp.data.local.dao
 
 import androidx.room.*
-import com.chockydevelopment.wallpaperapp.data.local.models_local.Favorites
 import com.chockydevelopment.wallpaperapp.data.remote.models_remote.collection_dto.CollectionItem
 import kotlinx.coroutines.flow.Flow
 

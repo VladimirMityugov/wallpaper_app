@@ -43,7 +43,7 @@ fun ImageItem(
             .padding(top = 53.dp, bottom = 60.dp),
         contentAlignment = Alignment.Center
     ) {
-        LoadImage(url = item.urlsM.full, name = item.id)
+        LoadImage(url = item.urlsM.small, name = item.id)
         val context = LocalContext.current
 
 
@@ -55,7 +55,7 @@ fun ImageItem(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(35.dp)
+                    .height(30.dp)
                     .background(MaterialTheme.colors.onPrimary.copy(0.45f)),
                 horizontalArrangement = Arrangement.SpaceBetween,
 
@@ -71,12 +71,12 @@ fun ImageItem(
                 ),
                     contentDescription = "download",
                     modifier = Modifier
-                        .padding(start = 10.dp, top = 5.dp)
+                        .padding(start = 10.dp, top = 5.dp, bottom = 5.dp)
                         .size(22.dp)
                         .clickable {
                             val downloadIntent = Intent(
                                 Intent.ACTION_VIEW,
-                                Uri.parse(item.linksM.download_location)
+                                Uri.parse(item.linksM.html)
                             )
                             startActivity(context, downloadIntent, null)
                         })
@@ -88,8 +88,8 @@ fun ImageItem(
                 ),
                     contentDescription = "to_favorites",
                     modifier = Modifier
-                        .padding(end = 10.dp, top = 5.dp)
-                        .size(22.dp)
+                        .padding(end = 10.dp, top = 5.dp, bottom = 5.dp)
+                        .size(25.dp)
                         .clickable {
                             if (inFavorites) viewModel.deleteFromFavoritesById(item.id)
                             else viewModel.addToFavorites(item)

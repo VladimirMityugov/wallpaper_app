@@ -156,12 +156,12 @@ fun CollectionItem(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier
-                            .width(170.dp)
+                            .width(140.dp)
                             .padding(start = 10.dp)
                             .clickable {
                                 val browserIntent = Intent(
                                     Intent.ACTION_VIEW,
-                                    Uri.parse("${item.userM.links.html}?utm_source=chocky_devs_images&utm_medium=referral")
+                                    Uri.parse("https://unsplash.com/@${item.userM.username}?utm_source=chocky_devs_images&utm_medium=referral")
                                 )
                                 startActivity(context, browserIntent, null)
                             }
@@ -175,6 +175,7 @@ fun CollectionItem(
                         contentDescription = "to_favorites",
                         modifier = Modifier
                             .padding(end = 10.dp)
+                            .width(15.dp)
                             .size(15.dp)
                             .clickable {
                                 if (inFavorites) viewModel.deleteFromFavoritesById(item.id)

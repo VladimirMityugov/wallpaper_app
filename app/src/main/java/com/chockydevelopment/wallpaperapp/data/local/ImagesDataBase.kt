@@ -3,7 +3,6 @@ package com.chockydevelopment.wallpaperapp.data.local
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.chockydevelopment.wallpaperapp.data.local.dao.FavoritesDao
-import com.chockydevelopment.wallpaperapp.data.local.models_local.Favorites
 import com.chockydevelopment.wallpaperapp.data.remote.models_remote.collection_dto.CollectionItem
 
 

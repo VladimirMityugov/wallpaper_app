@@ -1,9 +1,7 @@
 package com.chockydevelopment.wallpaperapp.data.local.repositories_local
 
 import com.chockydevelopment.wallpaperapp.data.local.dao.FavoritesDao
-import com.chockydevelopment.wallpaperapp.data.local.mappers_local.FavoritesMapper
 import com.chockydevelopment.wallpaperapp.data.remote.mappers_remote.CollectionMapper
-import com.chockydevelopment.wallpaperapp.domain.local.models.FavoritesM
 import com.chockydevelopment.wallpaperapp.domain.local.repositories.RepositoryLocal
 import com.chockydevelopment.wallpaperapp.domain.remote.models.collection.CollectionItemM
 import kotlinx.coroutines.flow.Flow

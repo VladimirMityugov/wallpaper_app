@@ -17,25 +17,19 @@ class CollectionMapper {
     private fun toUrlsM(urls: Urls): UrlsM {
         return UrlsM(
             small = urls.small,
-            full = urls.full
+            full = urls.full,
+            regular = urls.regular
         )
     }
 
     private fun toUserM(user: User): UserM {
         return UserM(
-            username = user.username,
-            links = toUserLinksM(user.links)
+            username = user.username
         )
     }
 
     private fun toLinksM(links: Links): LinksM {
         return LinksM(
-            download_location = links.download_location
-        )
-    }
-
-    private fun toUserLinksM(links: UserLinks): UserLinksM {
-        return UserLinksM(
             html = links.html
         )
     }
@@ -52,26 +46,20 @@ class CollectionMapper {
     private fun fromUrlsM(urlsM: UrlsM): Urls {
         return Urls(
             small = urlsM.small,
-            full = urlsM.full
+            full = urlsM.full,
+            regular = urlsM.regular
         )
     }
 
     private fun fromUserM(userM: UserM): User {
         return User(
-            username = userM.username,
-            links = fromUserLinksM(userM.links)
+            username = userM.username
         )
     }
 
     private fun fromLinksM(linksM: LinksM): Links {
         return Links(
-            download_location = linksM.download_location
-        )
-    }
-
-    private fun fromUserLinksM(userLinksM: UserLinksM): UserLinks {
-        return UserLinks(
-            html = userLinksM.html
+            html = linksM.html
         )
     }
 
